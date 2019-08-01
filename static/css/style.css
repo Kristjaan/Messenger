@@ -1,0 +1,9 @@
+body {
+    background-color: lightblue;
+}
+
+.guessing {
+    margin: 0 auto;
+    padding: 15px;
+    width: 700px;
+}

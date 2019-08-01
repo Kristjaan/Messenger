@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Write a message</h1>
+<p>Logged in as: {{email}}</p>
+<div>
+    <form method="post" action="/messenger/{{session_cookie}}">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Recipient</label>
+            <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                   placeholder="Enter email">
+        </div>
+        <div class="form-group">
+            <label for="comment">Message:</label>
+
+            <textarea type="text" name="text" class="form-control" rows="5" id="comment" placeholder="Text"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <p><a href="/messenger/{{session_cookie}}/received">Received Messages </a></p>
+        <p><a href="/messenger/{{session_cookie}}/sent">Sent</a></p>
+    </form>
+</div>
+
+
+{% endblock content %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method="get" action="/messenger/{{session_cookie}}/received">
+    <h1>Your received messages</h1>
+    <p>Logged in as: {{email}}</p>
+
+    {% if text %}
+    {% set text_lst = text.split('|') %}
+    {% for text in text_lst %}
+    <p>{{text}}</p> <p><a href="/messenger/{{session_cookie}}/received/delete">Delete</a></p>
+    {% endfor %}
+    {% else %}
+    <h3>No messages</h3>
+    {% endif %}
+    <p></p><a href="/messenger/{{session_cookie}}">Back</a></p>
+    <p><a href="/messenger/{{session_cookie}}/sent">Sent</a></p>
+</form>
+
+{% endblock content %}
