@@ -2,6 +2,47 @@
 
 {% block content %}
 
+ {% if logged_in %}
+<div class="centered" style="margin: 0 auto; width: 600px">
+    <div class="card" style="width: 20rem;">
+        <img src="/static/img/anonymous.png" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">{{email}}</h5>
+            <p class="card-text">A new user of my fabulous messaging app! </p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">A brave user</li>
+            <li class="list-group-item">Interested in the messaging mysteries</li>
+            <li class="list-group-item">Never stop messaging</li>
+        </ul>
+        <div class="card-body">
+            <a href="/profile/delete" class="card-link">Delete Profile</a>
+            <a href="/profile/change_password" class="card-link">Change Password</a>
+        </div>
+    </div>
+</div>
+
+ {% elif change_password %}
+<h1>Change your password</h1>
+<div class="loginForm">
+    <form method="post" action="/login">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                   placeholder="Enter email" value="{{email}}">
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input type="password" name="password" class="form-control" id="exampleInputPassword1"
+                   placeholder="Password">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+ {% else %}
+
 <h1>Please login</h1>
 <div class="loginForm">
     <form method="post" action="/login">
@@ -20,6 +61,6 @@
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
-
+{% endif %}
 
 {% endblock content %}

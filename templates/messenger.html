@@ -17,11 +17,26 @@
             <textarea type="text" name="text" class="form-control" rows="5" id="comment" placeholder="Text"></textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Send</button>
         <p><a href="/messenger/{{session_cookie}}/received">Received Messages </a></p>
         <p><a href="/messenger/{{session_cookie}}/sent">Sent</a></p>
     </form>
 </div>
+
+<table class="table table-dark">
+    <thead>
+    <tr>
+        <th scope="col">Users</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for user in user_all %}
+    <tr>
+        <td>{{user.email}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 
 
 {% endblock content %}

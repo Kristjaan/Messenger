@@ -63,15 +63,48 @@ def login():
         return redirect(url_for('login'))
 
 
-texts = []
-messages = {}
+@app.route("/profile", methods=["GET"])
+def profile():
+    session_cookie = request.cookies.get("session_cookie")
+    user = db.query(User).filter_by(session_token=session_cookie).first()
+    if user:
+        return render_template("login.html", logged_in=True, email=user.email )
+    else:
+        return render_template("login.html", logged_in=False)
 
-# TODO: Add delete, edit, list all users, details?, change password, profile page; Who's logged in...
+
+@app.route("/profile/delete", methods=["GET"])
+def profile_delete():
+    session_cookie = request.cookies.get("session_cookie")
+    user = db.query(User).filter_by(session_token=session_cookie).first()
+    db.delete(user)
+    db.commit()
+    response: Response = redirect(url_for("login", logged_in=False))
+    response.set_cookie('session_cookie', '', expires=0)
+    return response
+
+
+@app.route("/profile/change_password", methods=["GET", "POST"])
+def profile_change_password():
+    if request.method == "GET":
+        session_cookie = request.cookies.get("session_cookie")
+        user_change = db.query(User).filter_by(session_token=session_cookie).first()
+        return render_template("login.html", change_password=True, email=user_change.email)
+    elif request.method == "POST":
+        session_cookie = request.cookies.get("session_cookie")
+        user_change = db.query(User).filter_by(session_token=session_cookie).first()
+        password = hashlib.sha256(request.form.get("password").encode("utf-8")).hexdigest()
+        user_change.password = password
+        db.commit()
+        return redirect(url_for("login", logged_in=True, email=user_change.email))
+
+
 @app.route("/messenger/<session_cookie>", methods=["GET", "POST"])
 def messenger(session_cookie):
     if request.method == "GET":
+        user_all = db.query(User).all()
         user = db.query(User).filter_by(session_token=session_cookie).first()
-        return render_template("messenger.html", session_cookie=user.session_token, email=user.email)
+        return render_template("messenger.html", session_cookie=user.session_token, email=user.email, user_all=user_all)
 
     elif request.method == "POST":
         user1 = db.query(User).filter_by(session_token=session_cookie).first()
